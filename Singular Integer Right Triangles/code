@@ -1,0 +1,50 @@
+// Singular Integer Right Triangles - Problem 75
+// Ismi Yasifa
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+//Function for calculating Greatest Common Divisor (GCD)
+int GCD(int a, int b) {
+    if(a==b) return a;
+    if(a<b) return GCD(b, a);
+    if(b==0) return a;
+    return GCD(b, a%b);
+}
+
+int main() {
+    cout<<"--- Right Triangles ---"<<endl<<endl;
+
+    int L; //Define variable for maximum length of wire
+    int totalTriangle = 0; //Initialize the value of total integer sided right angle triangle formed
+    int a, b, c, l;
+
+    cout<<"Input maximum length (L): ";
+    cin>>L;
+
+    int* triangles = new int[L + 1];
+    int i_max = sqrt(L/2);
+
+    for (int i=2; i<=i_max; i++) {
+        for (int j=1; j<=i; j++) {
+            if (((i+j)%2)==1 && GCD(i,j)==1) {
+                a = i*i + j*j;
+                b = i*i - j*j;
+                c = 2*i*j;
+                l = a+b+c;
+                while(l <= L){
+                    triangles[l]++;
+                    if (triangles[l] == 1) totalTriangle++;
+                    if (triangles[l] == 2) totalTriangle--;
+                    l += a+b+c;
+                }
+            }
+        }
+    }
+
+    //Display the total number of triangles to console
+    cout<<"\nTotal right angle triangles can be formed for L = "<<L<<" is "<<totalTriangle<<endl;
+
+    return 0;
+}
