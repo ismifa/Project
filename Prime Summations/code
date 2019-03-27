@@ -1,0 +1,63 @@
+// Prime Summations - Problem 77
+// Ismi Yasifa
+
+#include<iostream>
+#include<cmath>
+#include<string>
+#include<string.h>
+#include<vector>
+using namespace std;
+
+int main() {
+    cout<<"--- Prime Summations ---"<<endl<<endl;
+
+    bool* prime;
+    int p = 100;
+    int N_max; //Define variable for maximum different ways
+
+    cout<<"Input maximum different ways (N): ";
+    cin>>N_max;
+
+    //Assign value to the primes
+    prime = new bool[p];
+    memset(prime, true, sizeof(bool)*p);
+    prime[0] = false;
+    prime[1] = false;
+
+    for(int i=2; i<=sqrt(p); i++) {
+        for(int j=2*i; j<p; j+=i) {
+            prime[j] = false;
+        }
+    }
+
+    vector<int> Prime;
+    for(int i=2; i<p; i++) {
+        if(prime[i]) {
+            Prime.push_back(i);
+        }
+    }
+
+    //Calculate the first value which can be written as the sum of primes in over N_max different ways
+    int firstValue = 0; //Initialize the first value
+    while (true) {
+        int* N = new int[firstValue + 1];
+        memset(N, 0, sizeof(int) * (firstValue + 1));
+        N[0] = 1;
+
+        for (int i = 0; i < Prime.size(); i++) {
+            for (int j = Prime[i]; j <= firstValue; j++) {
+                N[j] += N[j - Prime[i]];
+            }
+        }
+
+        if (N[firstValue] > N_max) {
+            break;
+        }
+        firstValue++;
+    }
+
+    //Display the first value to console
+    cout<<"\nFirst value which can be written as the sum of primes in over "<<N_max<<" different ways is "<<firstValue<<endl;
+
+    return 0;
+}
