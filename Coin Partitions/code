@@ -39,7 +39,5 @@ int main() {
     //Display the first value to console
     cout<<"\nThe least value of coins (n) which p(n) is divisible by "<<N_max<<" : "<<n<<endl;
 
-    cout<<"Result "<<n<<endl;
-
     return 0;
 }
