@@ -1,0 +1,45 @@
+// Coin Partitions - Problem 78
+// Ismi Yasifa
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int main() {
+    vector<int> p;
+    p.push_back(1);
+
+    int n = 1; //Initialize the number of coin
+    int N_max; //Define variable for maximum different ways
+
+    cout<<"Input maximum different ways (N): ";
+    cin>>N_max;
+
+    while(true){
+        int i=0;
+        int j=1;
+        p.push_back(0);
+        //Calculate different ways of coins can be separated into piles
+        while(j<=n) {
+            int a = (i%4 > 1) ? -1:1;
+            p[n] += a*p[n-j];
+            p[n] %= N_max;
+            i++;
+            int k = (i%2 == 0) ? i/2 + 1 : -(i/2 + 1);
+            j = k*(3*k-1)/2;
+        }
+
+        //Calculate least value of coins (n) for which total of different ways (p(n)) is divisible by N_max
+        if (p[n]==0) {
+            break;
+        }
+        n++;
+    }
+
+    //Display the first value to console
+    cout<<"\nThe least value of coins (n) which p(n) is divisible by "<<N_max<<" : "<<n<<endl;
+
+    cout<<"Result "<<n<<endl;
+
+    return 0;
+}
