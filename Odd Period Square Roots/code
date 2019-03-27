@@ -1,0 +1,115 @@
+// Odd Period Square Roots - Problem 64
+// Ismi Yasifa
+
+#include<iostream>
+#include<cmath>
+#include<set>
+#include<vector>
+using namespace std;
+
+//Procedure for calculating squares
+set<int> squares;
+void Square(int N) {
+    for (int i=1; i<=sqrt(N); i++) {
+        squares.insert(i*i);
+    }
+}
+
+//Function for calculating Greatest Common Divisor (GCD)
+int GCD(int a, int b) {
+    if(a==b) return a;
+    if(a<b) return GCD(b, a);
+    if(b==0) return a;
+    return GCD(b, a%b);
+}
+
+//Structure for constructing the fractions
+struct Fractions {
+    int p, a, b, c, integer;
+
+    Fractions(int x, int xIrrational, int xRational, int y)
+        :p(x), a(xIrrational), b(xRational), c(y) {}
+
+    void Fract() {
+        integer = Int();
+        b -= c*integer;
+    }
+
+    int Int() {
+        int x=0;
+        for (; a*a*p >= (c*x + c - b)*(c*x + c- b); x++);
+        return x;
+    }
+
+    void Inverse() {
+        int d = c;
+        c = p*a*a - b*b;
+        a *= d;
+        b *= -d;
+
+        int gcd = GCD(GCD(a,b),c);
+        c /= gcd, a /= gcd, b /= gcd;
+    }
+
+    bool operator < (const Fractions&other) const {
+        if (a != other.a) {
+            return a < other.a;
+        }
+        if (b != other.b) {
+            return b < other.b;
+        }
+        return c < other.c;
+    }
+};
+
+//Structure for calculating period of continued fractions
+struct Build {
+    int p, integer;
+    vector<int> period;
+    Build(int n) : p(n) {
+        Fractions f(n, 1, 0, 1);
+        f.Fract();
+        integer = f.integer;
+
+        set<Fractions> fract;
+        for (int i = 0; ; i++) {
+            f.Inverse();
+            f.Fract();
+            period.push_back(f.integer);
+            if (fract.find(f) == fract.end()) {
+                fract.insert(f);
+            }
+            else {
+                period.pop_back();
+                break;
+            }
+        }
+    }
+};
+
+int main() {
+    cout<<"--- Period of Square Roots ---"<<endl<<endl;
+
+    int N; //Define variable for maximum number
+    int OddPeriod = 0; //Initialize the value of odd period of continued fractions
+
+    cout<<"Input maximum number (N): ";
+    cin>>N;
+
+    Square(N);
+
+    //Calculate odd period of continued factors until square roots of N
+    for (int i=1; i<=N; i++) {
+        if (squares.find(i)==squares.end()) {
+            Build builder(i);
+            if (builder.period.size()%2 != 0) { //Requirement for calculating odd period
+                OddPeriod++;
+            }
+        }
+    }
+
+    //Display the odd period to console
+    cout<<"\nContinued fractions until N = "<<N<<" having odd period is "<<OddPeriod<<endl;
+
+    return 0;
+}
