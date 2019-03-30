@@ -1,0 +1,47 @@
+//Largest Palindrome Product
+//Ismi Yasifa
+
+#include<iostream>
+using namespace std;
+
+int main () {
+    cout<<"Largest Palindrome Product"<<endl<<endl;
+
+    int n, product, num, inverse;
+    int largestProduct = 0;
+
+    cout<<"Input number of digits: ";
+    cin>>n;
+
+    int limitUp = 0;
+    for(int i=1; i<=n; i++){
+        limitUp *= 10;
+        limitUp += 9;
+    }
+
+    int limitLow = 1 + limitUp/10;
+    for(int i=limitUp; i>=limitLow; i--){
+        for(int j=i; j>=limitLow; j--){
+            product = i*j;
+            if(product<largestProduct) break;
+            num = product;
+            inverse = 0;
+
+            while(num != 0){
+                inverse = inverse*10 + num%10;
+                num /= 10;
+            }
+
+            if(product==inverse && product>largestProduct){
+                largestProduct = product;
+            }
+        }
+    }
+
+    end:
+    cout<<"\nLargest palindrome product of two "<<n<<"-digit numbers is "<<largestProduct<<endl;
+
+    return 0;
+}
+
+//n=3 : largestProduct = 906609
