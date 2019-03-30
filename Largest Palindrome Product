@@ -38,7 +38,6 @@ int main () {
         }
     }
 
-    end:
     cout<<"\nLargest palindrome product of two "<<n<<"-digit numbers is "<<largestProduct<<endl;
 
     return 0;
