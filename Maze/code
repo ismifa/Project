@@ -1,0 +1,84 @@
+// Running Text to form a Maze
+// Ismi Yasifa
+
+#include<iostream>
+#include<conio.h>
+#include<windows.h>
+using namespace std;
+
+//Going to certain coordinates in the console
+void gotoxy(int x, int y){
+    HANDLE hConsoleOutput;
+    COORD dwCursorPosition;
+    cout.flush();
+    dwCursorPosition.X = x;
+    dwCursorPosition.Y = y;
+    hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(hConsoleOutput,dwCursorPosition);
+}
+
+main () {
+    cout<<"Running Text Maze"<<endl;
+
+    //Input number of rows and columns of the maze
+    int Nbar, Nkol;
+    cout<<"\nInput number of rows: ";
+    cin>>Nbar;
+    cout<<"Input number of columns: ";
+    cin>>Nkol;
+
+    //Initialization number of '#' every direction (1: right, 2: down, 3: left, 4: up)
+    int m1 = Nbar, m2 = Nkol-1, m3 = Nbar, m4 = Nkol-1;
+    int a = 0, b = 5; //Initial coordinate for '#' moving to the right
+    int d = Nbar-1, e = 6; //Initial coordinate for '#' moving down
+    int p = 0, q = Nkol+5; //Initial coordinate for '#' moving to the left
+    int s = Nbar-1, t = Nkol+5; //Initial coordinate for '#' moving up
+
+    //Looping to form a maze
+    for(int i=1; i<=Nkol; i++)
+    { //Number of direction determines by number of columns
+        //Running text to the right
+        if(i==1 || (i%4)==1){
+            for(int j=0; j<m1; j++){
+                gotoxy(a+j,b);
+                cout<<"#";
+                Sleep(50);
+            }
+            if(i==1){
+                m1 -= 3;
+            } else {
+                m1 -= 4;
+            }
+            a -= 8, b -= 8;
+        }
+        //Running text down
+        else if(i==2 || (i%4)==2){
+            for(int j=0; j<m2; j++){
+                gotoxy(d,e+j);
+                cout<<"#";
+                Sleep(50);
+            }
+            m2 -= 4, d -= 2, e += 2;
+        }
+        //Running text to the left
+        else if(i==3 || (i%4)==3){
+            for(int j=0; j<m3; j++){
+                gotoxy(s-j,t);
+                cout<<"#";
+                Sleep(50);
+            }
+            m3 -= 4, s -= 2, t -= 2;
+        }
+        //Running text up
+        else {
+            for(int j=0; j<m4; j++){
+                gotoxy(p,q-j);
+                cout<<"#";
+                Sleep(50);
+            }
+            m4 -= 4, p += 2, q -= 2;
+        }
+    }
+
+    getch();
+}
